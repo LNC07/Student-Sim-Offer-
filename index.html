@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>শেয়ার করতে হবে আগে</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    #content {
+      display: none;
+    }
+    button {
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="sharePrompt">
+    <h2>ওয়েবসাইট দেখতে, প্রথমে আপনার বন্ধুদের সাথে শেয়ার করুন</h2>
+    <button onclick="shareSite()">শেয়ার করুন</button>
+  </div>
+
+  <div id="content">
+    <h1>আপনার ওয়েবসাইটের আসল কন্টেন্ট এখানে</h1>
+    <p>স্কুল অফার চেক করুন এবং আরও অনেক কিছু।</p>
+    <!-- আপনার আসল ওয়েবসাইট কন্টেন্ট এখানে রাখুন -->
+  </div>
+
+  <script>
+    function shareSite() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'স্কুল অফার চেক করুন',
+          text: 'এই ওয়েবসাইট থেকে স্কুল অফারগুলো চেক করুন!',
+          url: window.location.href
+        }).then(() => {
+          // শেয়ার হয়ে গেছে, তখন আসল কন্টেন্ট দেখাও
+          document.getElementById('sharePrompt').style.display = 'none';
+          document.getElementById('content').style.display = 'block';
+        }).catch((error) => {
+          alert('শেয়ার করা হয়নি। আবার চেষ্টা করুন।');
+        });
+      } else {
+        alert('আপনার ব্রাউজার শেয়ার API সাপোর্ট করে না। ম্যানুয়ালি লিঙ্ক কপি করে শেয়ার করুন।');
+      }
+    }
+  </script>
+
+</body>
+</html>
