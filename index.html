@@ -2,58 +2,114 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>শেয়ার করতে হবে আগে</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>স্কুল অফার চেক</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f8ff;
       text-align: center;
-      padding: 40px;
     }
-    #content {
-      display: none;
+    h1 {
+      color: #333;
+      font-size: 24px;
+    }
+    select,
+    input,
+    button {
+      width: 90%;
+      max-width: 300px;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
     }
     button {
-      padding: 12px 25px;
-      font-size: 18px;
-      border: none;
       background-color: #007bff;
       color: white;
-      border-radius: 6px;
-      cursor: pointer;
+      border: none;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #222;
+    }
+    .ad-banner {
+      margin: 20px 0;
     }
   </style>
 </head>
 <body>
 
   <div id="sharePrompt">
-    <h2>ওয়েবসাইট দেখতে, প্রথমে আপনার বন্ধুদের সাথে শেয়ার করুন</h2>
-    <button onclick="shareSite()">শেয়ার করুন</button>
+    <p>আপনার বন্ধুদের কাছে আমাদের ওয়েবসাইটটি শেয়ার করুন তারপর মূল সাইট দেখুন।</p>
+    <button onclick="shareApp()">শেয়ার করুন</button>
   </div>
 
-  <div id="content">
-    <h1>আপনার ওয়েবসাইটের আসল কন্টেন্ট এখানে</h1>
-    <p>স্কুল অফার চেক করুন এবং আরও অনেক কিছু।</p>
-    <!-- আপনার আসল ওয়েবসাইট কন্টেন্ট এখানে রাখুন -->
+  <div id="content" style="display:none;">
+    <h1>স্কুল অফার চেক করুন</h1>
+
+    <label>সিম কোম্পানি:</label><br>
+    <select id="sim">
+      <option value="gp">Grameenphone</option>
+      <option value="robi">Robi</option>
+      <option value="banglalink">Banglalink</option>
+      <option value="teletalk">Teletalk</option>
+    </select><br>
+
+    <label>মোবাইল নম্বর:</label><br>
+    <input type="text" id="number" placeholder="01xxxxxxxxx"><br>
+
+    <button onclick="checkOffer()">চেক করুন</button>
+
+    <div id="result"></div>
+
+    <!-- আপনার বেনার কোড এখানে বসান -->
+
   </div>
 
   <script>
-    function shareSite() {
+    function shareApp() {
       if (navigator.share) {
-        navigator.share({
-          title: 'স্কুল অফার চেক করুন',
-          text: 'এই ওয়েবসাইট থেকে স্কুল অফারগুলো চেক করুন!',
-          url: window.location.href
-        }).then(() => {
-          // শেয়ার হয়ে গেছে, তখন আসল কন্টেন্ট দেখাও
-          document.getElementById('sharePrompt').style.display = 'none';
-          document.getElementById('content').style.display = 'block';
-        }).catch((error) => {
-          alert('শেয়ার করা হয়নি। আবার চেষ্টা করুন।');
-        });
+        navigator
+          .share({
+            title: 'আমার ওয়েবসাইট',
+            text: 'দয়া করে আমার ওয়েবসাইটটি শেয়ার করুন',
+            url: window.location.href
+          })
+          .then(() => {
+            document.getElementById('sharePrompt').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+          })
+          .catch(() => {
+            alert('শেয়ার করা হয়নি, তাই ওয়েবসাইট খুলবে না।');
+          });
       } else {
-        alert('আপনার ব্রাউজার শেয়ার API সাপোর্ট করে না। ম্যানুয়ালি লিঙ্ক কপি করে শেয়ার করুন।');
+        alert('আপনার ব্রাউজার শেয়ার ফিচার সাপোর্ট করে না।');
       }
+    }
+
+    function checkOffer() {
+      const sim = document.getElementById('sim').value;
+      const number = document.getElementById('number').value;
+      const result = document.getElementById('result');
+
+      if (number.length !== 11 || !number.startsWith('01')) {
+        result.innerText = 'সঠিক মোবাইল নাম্বার দিন।';
+        return;
+      }
+
+      const offers = {
+        gp: 'Grameenphone স্টুডেন্ট অফার:\n1GB @ 23Tk\nডায়াল করুন: *121*1*4#',
+        robi: 'Robi স্কুল অফার:\n2GB @ 29Tk\nডায়াল করুন: *123*044#',
+        banglalink: 'Banglalink শিক্ষার্থী অফার:\n3GB @ 34Tk\nডায়াল করুন: *5000*524#',
+        teletalk: 'Teletalk স্কুল নেট:\n5GB @ 50Tk\nডায়াল করুন: *111*6*1#'
+      };
+
+      result.innerText = offers[sim] || 'অফার পাওয়া যায়নি।';
     }
   </script>
 
