@@ -16,9 +16,7 @@
       color: #333;
       font-size: 24px;
     }
-    select,
-    input,
-    button {
+    select, input, button {
       width: 90%;
       max-width: 300px;
       padding: 12px;
@@ -36,80 +34,119 @@
       margin-top: 20px;
       font-size: 18px;
       color: #222;
+      white-space: pre-line;
     }
     .ad-banner {
       margin: 20px 0;
+    }
+    #mainContent {
+      display: none;
+    }
+    #sharePrompt {
+      font-size: 18px;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
   <div id="sharePrompt">
-    <p>আপনার বন্ধুদের কাছে আমাদের ওয়েবসাইটটি শেয়ার করুন তারপর মূল সাইট দেখুন।</p>
-    <button onclick="shareApp()">শেয়ার করুন</button>
+    <p>আপনার বন্ধুর সাথে শেয়ার করুন এই অফারটি দেখতে:</p>
+    <button onclick="shareNow()">শেয়ার করুন</button>
   </div>
 
-  <div id="content" style="display:none;">
+  <div id="mainContent">
+    <!-- Ad Banner Top -->
+    <div class="ad-banner">
+      <script type="text/javascript">
+        atOptions = {
+          'key': 'b0b6f8f691c95027fe937714ba986e03',
+          'format': 'iframe',
+          'height': 90,
+          'width': 728,
+          'params': {}
+        };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/b0b6f8f691c95027fe937714ba986e03/invoke.js"></script>
+    </div>
+
     <h1>স্কুল অফার চেক করুন</h1>
 
-    <label>সিম কোম্পানি:</label><br>
+    <label>সিম কোম্পানি:</label><br />
     <select id="sim">
       <option value="gp">Grameenphone</option>
       <option value="robi">Robi</option>
       <option value="banglalink">Banglalink</option>
       <option value="teletalk">Teletalk</option>
-    </select><br>
+    </select><br />
 
-    <label>মোবাইল নম্বর:</label><br>
-    <input type="text" id="number" placeholder="01xxxxxxxxx"><br>
+    <label>মোবাইল নম্বর:</label><br />
+    <input type="text" id="number" placeholder="01xxxxxxxxx" /><br />
 
     <button onclick="checkOffer()">চেক করুন</button>
 
+    <!-- Ad Banner Middle -->
+    <div class="ad-banner">
+      <script type="text/javascript">
+        atOptions = {
+          'key': 'b0b6f8f691c95027fe937714ba986e03',
+          'format': 'iframe',
+          'height': 90,
+          'width': 728,
+          'params': {}
+        };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/b0b6f8f691c95027fe937714ba986e03/invoke.js"></script>
+    </div>
+
     <div id="result"></div>
 
-    <!-- আপনার বেনার কোড এখানে বসান -->
-
+    <!-- Ad Banner Bottom -->
+    <div class="ad-banner">
+      <script type="text/javascript">
+        atOptions = {
+          'key': 'b0b6f8f691c95027fe937714ba986e03',
+          'format': 'iframe',
+          'height': 90,
+          'width': 728,
+          'params': {}
+        };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/b0b6f8f691c95027fe937714ba986e03/invoke.js"></script>
+    </div>
   </div>
 
   <script>
-    function shareApp() {
-      if (navigator.share) {
-        navigator
-          .share({
-            title: 'আমার ওয়েবসাইট',
-            text: 'দয়া করে আমার ওয়েবসাইটটি শেয়ার করুন',
-            url: window.location.href
-          })
-          .then(() => {
-            document.getElementById('sharePrompt').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
-          })
-          .catch(() => {
-            alert('শেয়ার করা হয়নি, তাই ওয়েবসাইট খুলবে না।');
-          });
-      } else {
-        alert('আপনার ব্রাউজার শেয়ার ফিচার সাপোর্ট করে না।');
-      }
+    function shareNow() {
+      const url = window.location.href;
+      const text = encodeURIComponent("এই সাইটে গিয়ে আপনার সিম অফার চেক করুন:\n") + url;
+      const shareLink = `https://t.me/share/url?url=${text}`;
+      window.open(shareLink, "_blank");
+
+      // শেয়ারের পর মূল কনটেন্ট দেখান
+      document.getElementById("sharePrompt").style.display = "none";
+      document.getElementById("mainContent").style.display = "block";
     }
 
     function checkOffer() {
-      const sim = document.getElementById('sim').value;
-      const number = document.getElementById('number').value;
-      const result = document.getElementById('result');
+      const sim = document.getElementById("sim").value;
+      const number = document.getElementById("number").value;
+      const result = document.getElementById("result");
 
-      if (number.length !== 11 || !number.startsWith('01')) {
-        result.innerText = 'সঠিক মোবাইল নাম্বার দিন।';
+      if (number.length !== 11 || !number.startsWith("01")) {
+        result.innerText = "সঠিক মোবাইল নাম্বার দিন।";
         return;
       }
 
       const offers = {
-        gp: 'Grameenphone স্টুডেন্ট অফার:\n1GB @ 23Tk\nডায়াল করুন: *121*1*4#',
-        robi: 'Robi স্কুল অফার:\n2GB @ 29Tk\nডায়াল করুন: *123*044#',
-        banglalink: 'Banglalink শিক্ষার্থী অফার:\n3GB @ 34Tk\nডায়াল করুন: *5000*524#',
-        teletalk: 'Teletalk স্কুল নেট:\n5GB @ 50Tk\nডায়াল করুন: *111*6*1#'
+        gp: "Grameenphone স্টুডেন্ট অফার:\n1GB @ 23Tk\nডায়াল করুন: *121*1*4#",
+        robi: "Robi স্কুল অফার:\n2GB @ 29Tk\nডায়াল করুন: *123*044#",
+        banglalink: "Banglalink শিক্ষার্থী অফার:\n3GB @ 34Tk\nডায়াল করুন: *5000*524#",
+        teletalk: "Teletalk স্কুল নেট:\n5GB @ 50Tk\nডায়াল করুন: *111*6*1#"
       };
 
-      result.innerText = offers[sim] || 'অফার পাওয়া যায়নি।';
+      result.innerText = offers[sim] || "অফার পাওয়া যায়নি।";
+      window.open('https://www.profitableratecpm.com/zzxwsgmjy?key=35033258a34c1b2f82a7b1d2a346fbe1', '_blank');
     }
   </script>
 
